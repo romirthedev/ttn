@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talent Trade Network</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <style>
         /* Global Styles */
         * {
@@ -38,7 +39,7 @@
             transition: color 0.3s ease;
         }
         a:hover {
-            color: #0053ff; /* Palantir’s blue accent */
+            color: #0053ff;
         }
 
         /* Navbar */
@@ -101,6 +102,7 @@
             padding: 120px 0;
             min-height: 100vh;
             background: #fff;
+            position: relative;
         }
         .section.active {
             display: block;
@@ -127,9 +129,6 @@
 
         /* Home Section */
         #home {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             text-align: center;
             position: relative;
         }
@@ -170,63 +169,76 @@
             background: #0053ff;
             transform: translateY(-3px);
         }
+        #home-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.2;
+        }
 
         /* Trade Hub Section */
         #hub .hub-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 60px;
+            position: relative;
         }
-        .talent-form, .talent-directory {
+        .talent-form {
             background: #f9fafb;
-            padding: 50px;
-            border-radius: 10px;
+            padding: 40px;
+            border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .talent-form:hover, .talent-directory:hover {
+        .talent-form:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         }
-        .talent-form h2, .talent-directory h2 {
-            font-size: 2.5em;
+        .talent-form h2 {
+            font-size: 2em;
             font-weight: 900;
             margin-bottom: 30px;
         }
         .form-field {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            position: relative;
         }
         .form-field label {
-            font-size: 1.2em;
+            font-size: 1em;
             font-weight: 500;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            color: #374151;
         }
         .form-field input, .form-field textarea {
             width: 100%;
-            padding: 15px;
-            border: 1px solid #d1d5db;
-            border-radius: 5px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
             background: #fff;
-            font-size: 1.1em;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1em;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
         }
         .form-field input:focus, .form-field textarea:focus {
-            border-color: #0053ff;
-            box-shadow: 0 0 5px rgba(0, 83, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 83, 255, 0.2);
+            transform: translateY(-2px);
             outline: none;
         }
         .form-field textarea {
-            min-height: 120px;
-            resize: vertical;
+            min-height: 100px;
+            resize: none;
         }
         .action-btn {
             background: #000;
             color: #fff;
-            padding: 15px 40px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 5px;
-            font-size: 1.2em;
+            border-radius: 8px;
+            font-size: 1.1em;
             font-weight: 700;
             cursor: pointer;
             transition: background 0.3s ease, transform 0.3s ease;
@@ -235,32 +247,91 @@
             background: #0053ff;
             transform: translateY(-3px);
         }
+        .talent-directory {
+            background: #f9fafb;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .talent-directory:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        .talent-directory h2 {
+            font-size: 2em;
+            font-weight: 900;
+            margin-bottom: 30px;
+        }
         .filter-bar {
             display: flex;
             gap: 20px;
             margin-bottom: 30px;
         }
-        .filter-bar input, .filter-bar select {
-            padding: 15px;
-            border: 1px solid #d1d5db;
-            border-radius: 5px;
+        .filter-bar input {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
             background: #fff;
-            font-size: 1.1em;
+            font-size: 1em;
             flex: 1;
-            transition: border-color 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease;
         }
-        .filter-bar input:focus, .filter-bar select:focus {
-            border-color: #0053ff;
+        .filter-bar input:focus {
+            box-shadow: 0 4px 15px rgba(0, 83, 255, 0.2);
             outline: none;
         }
+        .custom-dropdown {
+            position: relative;
+            flex: 1;
+        }
+        .custom-dropdown select {
+            display: none;
+        }
+        .dropdown-selected {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease;
+        }
+        .dropdown-selected:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 10;
+        }
+        .dropdown-menu div {
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .dropdown-menu div:hover {
+            background: #f1f5f9;
+        }
+        .custom-dropdown.active .dropdown-menu {
+            display: block;
+        }
         .talent-list {
-            max-height: 600px;
+            max-height: 500px;
             overflow-y: auto;
         }
         .talent-entry {
             background: #fff;
-            padding: 25px;
-            border-radius: 5px;
+            padding: 20px;
+            border-radius: 10px;
             margin-bottom: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -270,7 +341,7 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
         .talent-entry strong {
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: 700;
             display: block;
             margin-bottom: 10px;
@@ -281,12 +352,22 @@
             margin-top: 15px;
             display: block;
         }
+        #hub-canvas {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            z-index: 0;
+            opacity: 0.3;
+        }
 
         /* Resources Section */
         #resources .resources-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
+            position: relative;
         }
         .resource-card {
             background: #fff;
@@ -301,7 +382,7 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         }
         .resource-card h3 {
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: 900;
             margin-bottom: 20px;
         }
@@ -319,6 +400,15 @@
             background: #000;
             color: #fff;
         }
+        #resources-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+        }
 
         /* Stories Section */
         #stories .stories-container {
@@ -328,36 +418,55 @@
             flex-direction: column;
             gap: 60px;
         }
-        .story-form, .story-feed {
+        .story-form {
             background: #f9fafb;
-            padding: 50px;
-            border-radius: 10px;
+            padding: 40px;
+            border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .story-form:hover, .story-feed:hover {
+        .story-form:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         }
-        .story-form h2, .story-feed h2 {
-            font-size: 2.5em;
+        .story-form h2 {
+            font-size: 2em;
             font-weight: 900;
             margin-bottom: 30px;
         }
-        .story-entry {
-            background: #fff;
-            padding: 30px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        .story-feed {
+            background: #f9fafb;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .story-entry:hover {
+        .story-feed:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+        .story-feed h2 {
+            font-size: 2em;
+            font-weight: 900;
+            margin-bottom: 30px;
+        }
+        .story-carousel {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        .story-entry {
+            position: absolute;
+            width: 80%;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            text-align: center;
         }
         .story-entry p {
-            font-size: 1.3em;
+            font-size: 1.2em;
             font-style: italic;
         }
         .story-entry span {
@@ -372,7 +481,7 @@
             margin: 0 auto;
             background: #f9fafb;
             padding: 60px;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -381,9 +490,50 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         }
         .contact-wrapper h2 {
-            font-size: 2.5em;
+            font-size: 2em;
             font-weight: 900;
             margin-bottom: 30px;
+        }
+
+        /* Custom Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.3s ease-out;
+        }
+        .modal-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .modal-content button {
+            background: #0053ff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .modal-content button:hover {
+            background: #003bb3;
         }
 
         /* Animations */
@@ -393,10 +543,6 @@
         }
         @keyframes fadeInUp {
             from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
@@ -448,6 +594,7 @@
 
     <!-- Home Section -->
     <section id="home" class="section active">
+        <canvas id="home-canvas"></canvas>
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Talent Trade Network</h1>
@@ -489,21 +636,26 @@
                     <h2>Talent Directory</h2>
                     <div class="filter-bar">
                         <input type="text" id="search" placeholder="Search talents..." onkeyup="filterDirectory()">
-                        <select id="sort" onchange="sortDirectory()">
-                            <option value="name">Sort by Name</option>
-                            <option value="offer">Sort by Offer</option>
-                            <option value="request">Sort by Request</option>
-                            <option value="timestamp">Sort by Date</option>
-                        </select>
+                        <div class="custom-dropdown" id="sort-dropdown">
+                            <div class="dropdown-selected">Sort by Name</div>
+                            <div class="dropdown-menu">
+                                <div onclick="sortDirectory('name')">Sort by Name</div>
+                                <div onclick="sortDirectory('offer')">Sort by Offer</div>
+                                <div onclick="sortDirectory('request')">Sort by Request</div>
+                                <div onclick="sortDirectory('timestamp')">Sort by Date</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="talent-list" id="directory-list"></div>
                 </div>
+                <canvas id="hub-canvas"></canvas>
             </div>
         </div>
     </section>
 
     <!-- Resources Section -->
     <section id="resources" class="section">
+        <canvas id="resources-canvas"></canvas>
         <div class="container">
             <div class="section-header">
                 <h1>Resources</h1>
@@ -555,7 +707,7 @@
                 </div>
                 <div class="story-feed">
                     <h2>Community Stories</h2>
-                    <div id="story-list"></div>
+                    <div class="story-carousel" id="story-list"></div>
                 </div>
             </div>
         </div>
@@ -587,6 +739,14 @@
         </div>
     </section>
 
+    <!-- Custom Modal -->
+    <div class="modal" id="custom-modal">
+        <div class="modal-content">
+            <p id="modal-message"></p>
+            <button onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
     <script>
         // Navbar Scroll Effect
         window.addEventListener('scroll', () => {
@@ -605,12 +765,40 @@
             });
             const targetSection = document.getElementById(sectionId);
             targetSection.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
 
             // Re-render dynamic content
             if (sectionId === 'hub') renderDirectory();
             if (sectionId === 'stories') renderStories();
         }
+
+        // Custom Modal
+        function showModal(message) {
+            const modal = document.getElementById('custom-modal');
+            document.getElementById('modal-message').textContent = message;
+            modal.style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('custom-modal').style.display = 'none';
+        }
+
+        // Custom Dropdown
+        const dropdown = document.getElementById('sort-dropdown');
+        const selected = dropdown.querySelector('.dropdown-selected');
+        dropdown.querySelectorAll('.dropdown-menu div').forEach(item => {
+            item.addEventListener('click', () => {
+                selected.textContent = item.textContent;
+                dropdown.classList.remove('active');
+                sortDirectory(item.getAttribute('onclick').match(/'([^']+)'/)[1]);
+            });
+        });
+        selected.addEventListener('click', () => {
+            dropdown.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
 
         // Talent Trade Hub Logic
         let talents = JSON.parse(localStorage.getItem('talents')) || [];
@@ -622,7 +810,7 @@
             const contact = document.getElementById('contact').value.trim();
 
             if (!name || !offer || !request || !contact) {
-                alert('Please fill out all fields to add your talent.');
+                showModal('Please fill out all fields to add your talent.');
                 return;
             }
 
@@ -631,7 +819,7 @@
             localStorage.setItem('talents', JSON.stringify(talents));
             clearForm('hub');
             renderDirectory();
-            alert('Talent added successfully!');
+            showModal('Talent added successfully!');
         }
 
         function clearForm(section) {
@@ -697,14 +885,13 @@
 
         function filterDirectory() {
             const search = document.getElementById('search').value;
-            const sort = document.getElementById('sort').value;
+            const sort = document.querySelector('.dropdown-selected').textContent.replace('Sort by ', '').toLowerCase();
             renderDirectory(search, sort);
         }
 
-        function sortDirectory() {
+        function sortDirectory(sortType) {
             const search = document.getElementById('search').value;
-            const sort = document.getElementById('sort').value;
-            renderDirectory(search, sort);
+            renderDirectory(search, sortType);
         }
 
         // Stories Logic
@@ -718,7 +905,7 @@
             const text = document.getElementById('story-text').value.trim();
 
             if (!name || !text) {
-                alert('Please fill out both fields to share your story.');
+                showModal('Please fill out both fields to share your story.');
                 return;
             }
 
@@ -727,21 +914,19 @@
             localStorage.setItem('stories', JSON.stringify(stories));
             clearForm('stories');
             renderStories();
-            alert('Story shared successfully!');
+            showModal('Story shared successfully!');
         }
 
         function renderStories() {
             const storyList = document.getElementById('story-list');
             if (!storyList) return;
             storyList.innerHTML = '';
-            stories.sort((a, b) => b.timestamp - a.timestamp);
-
             if (stories.length === 0) {
                 storyList.innerHTML = '<p>No stories yet. Be the first to share!</p>';
                 return;
             }
 
-            stories.forEach(story => {
+            stories.forEach((story, index) => {
                 const div = document.createElement('div');
                 div.className = 'story-entry';
                 div.innerHTML = `
@@ -750,6 +935,22 @@
                 `;
                 storyList.appendChild(div);
             });
+
+            // Carousel Animation
+            const entries = storyList.querySelectorAll('.story-entry');
+            let current = 0;
+            const total = entries.length;
+            function updateCarousel() {
+                entries.forEach((entry, i) => {
+                    const offset = (i - current + total) % total;
+                    entry.style.left = `${offset * 100}%`;
+                    entry.style.opacity = offset === 0 ? 1 : 0.5;
+                    entry.style.transform = offset === 0 ? 'scale(1)' : 'scale(0.9)';
+                });
+                current = (current + 1) % total;
+            }
+            updateCarousel();
+            setInterval(updateCarousel, 3000);
         }
 
         // Contact Logic
@@ -759,19 +960,88 @@
             const message = document.getElementById('contact-message').value.trim();
 
             if (!name || !email || !message) {
-                alert('Please complete all fields to send your message.');
+                showModal('Please complete all fields to send your message.');
                 return;
             }
 
             if (!/\S+@\S+\.\S+/.test(email)) {
-                alert('Please enter a valid email address.');
+                showModal('Please enter a valid email address.');
                 return;
             }
 
             const contactData = { name, email, message, timestamp: Date.now() };
             console.log('Contact Submission:', contactData);
             clearForm('contact');
-            alert('Message sent successfully! (Note: This is a simulation—no real backend.)');
+            showModal('Message sent successfully! (Note: This is a simulation—no real backend.)');
+        }
+
+        // Three.js Animations
+        function initThreeJS() {
+            // Home: Orbiting Spheres
+            const homeScene = new THREE.Scene();
+            const homeCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const homeRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('home-canvas'), alpha: true });
+            homeRenderer.setSize(window.innerWidth, window.innerHeight);
+            const sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x0053ff, wireframe: true });
+            const spheres = [];
+            for (let i = 0; i < 5; i++) {
+                const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+                sphere.position.set(Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5);
+                homeScene.add(sphere);
+                spheres.push(sphere);
+            }
+            homeCamera.position.z = 10;
+            function animateHome() {
+                requestAnimationFrame(animateHome);
+                spheres.forEach((sphere, i) => {
+                    sphere.position.x = 5 * Math.sin(Date.now() * 0.001 + i);
+                    sphere.position.y = 5 * Math.cos(Date.now() * 0.001 + i);
+                });
+                homeRenderer.render(homeScene, homeCamera);
+            }
+            animateHome();
+
+            // Trade Hub: Rotating Cube
+            const hubScene = new THREE.Scene();
+            const hubCamera = new THREE.PerspectiveCamera(75, 300 / 300, 0.1, 1000);
+            const hubRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hub-canvas'), alpha: true });
+            hubRenderer.setSize(300, 300);
+            const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+            const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x0053ff, wireframe: true });
+            const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+            hubScene.add(cube);
+            hubCamera.position.z = 5;
+            function animateHub() {
+                requestAnimationFrame(animateHub);
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+                hubRenderer.render(hubScene, hubCamera);
+            }
+            animateHub();
+
+            // Resources: Background Particles
+            const resScene = new THREE.Scene();
+            const resCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const resRenderer = new THREE.WebGLRenderer({ canvas: document.getElementById('resources-canvas'), alpha: true });
+            resRenderer.setSize(window.innerWidth, window.innerHeight);
+            const particleGeometry = new THREE.BufferGeometry();
+            const particleCount = 100;
+            const positions = new Float32Array(particleCount * 3);
+            for (let i = 0; i < particleCount * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 20;
+            }
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const particleMaterial = new THREE.PointsMaterial({ color: 0x0053ff, size: 0.1 });
+            const particles = new THREE.Points(particleGeometry, particleMaterial);
+            resScene.add(particles);
+            resCamera.position.z = 10;
+            function animateResources() {
+                requestAnimationFrame(animateResources);
+                particles.rotation.y += 0.001;
+                resRenderer.render(resScene, resCamera);
+            }
+            animateResources();
         }
 
         // Initial Setup
@@ -779,6 +1049,7 @@
             showSection('home');
             renderDirectory();
             renderStories();
+            initThreeJS();
         });
     </script>
 </body>
