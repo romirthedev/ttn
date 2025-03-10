@@ -72,6 +72,7 @@
             text-transform: uppercase;
             padding: 10px 0;
             position: relative;
+            cursor: pointer;
         }
         .nav-links a::after {
             content: '';
@@ -156,10 +157,11 @@
             border-radius: 5px;
             transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
             animation: fadeIn 1s ease-out 0.7s backwards;
+            cursor: pointer;
         }
         .hero-cta:hover {
             background: #00ddeb;
-            color: #fff; /* Text turns white on hover for contrast */
+            color: #fff; /* Text turns white on hover */
             transform: translateY(-3px);
         }
         .hero-bg {
@@ -433,11 +435,11 @@
         <div class="container">
             <div class="logo">TTN</div>
             <ul class="nav-links">
-                <li><a href="#" onclick="showSection('home')">Home</a></li>
-                <li><a href="#" onclick="showSection('hub')">Trade Hub</a></li>
-                <li><a href="#" onclick="showSection('resources')">Resources</a></li>
-                <li><a href="#" onclick="showSection('stories')">Stories</a></li>
-                <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a onclick="showSection('hub')">Trade Hub</a></li>
+                <li><a onclick="showSection('resources')">Resources</a></li>
+                <li><a onclick="showSection('stories')">Stories</a></li>
+                <li><a onclick="showSection('contact')">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -449,7 +451,7 @@
             <div class="hero-content">
                 <h1 class="hero-title">Talent Trade Network</h1>
                 <p class="hero-subtitle">Empower your future. Trade skills with a global network of innovators.</p>
-                <a href="#" class="hero-cta" onclick="showSection('hub')">Get Started</a>
+                <a class="hero-cta" onclick="showSection('hub')">Get Started</a>
             </div>
         </div>
     </section>
@@ -590,8 +592,13 @@
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
-            document.getElementById(sectionId).classList.add('active');
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Re-render dynamic content when switching sections
+            if (sectionId === 'hub') renderDirectory();
+            if (sectionId === 'stories') renderStories();
         }
 
         // Talent Trade Hub Logic
@@ -634,6 +641,7 @@
 
         function renderDirectory(filter = '', sort = 'name') {
             const directory = document.getElementById('directory-list');
+            if (!directory) return; // Prevent errors if not on hub page yet
             directory.innerHTML = '';
             let filteredTalents = talents.filter(entry => 
                 entry.offer.toLowerCase().includes(filter.toLowerCase()) || 
@@ -713,6 +721,7 @@
 
         function renderStories() {
             const storyList = document.getElementById('story-list');
+            if (!storyList) return; // Prevent errors if not on stories page yet
             storyList.innerHTML = '';
             stories.sort((a, b) => b.timestamp - a.timestamp);
 
@@ -748,16 +757,18 @@
                 return;
             }
 
-            // Simulate sending (no real backend)
             const contactData = { name, email, message, timestamp: Date.now() };
-            console.log('Contact Submission:', contactData); // For debugging
+            console.log('Contact Submission:', contactData); // Simulated backend logging
             clearForm('contact');
             alert('Message sent successfully! (Note: This is a simulation—no real backend.)');
         }
 
-        // Initial Renders
-        renderDirectory();
-        renderStories();
+        // Initial Setup
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('home'); // Start on Home
+            renderDirectory();   // Preload directory if on hub
+            renderStories();     // Preload stories if on stories
+        });
     </script>
 </body>
 </html>
