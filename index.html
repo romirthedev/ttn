@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talent Trade Network</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         /* Global Styles */
         * {
@@ -14,8 +14,8 @@
         }
         body {
             font-family: 'Inter', sans-serif;
-            background: #000;
-            color: #fff;
+            background: #fff;
+            color: #000;
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -25,20 +25,20 @@
             padding: 0 40px;
         }
         h1, h2, h3 {
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
         }
         p {
             font-size: 1.1em;
-            color: #ccc;
+            color: #6b7280;
         }
         a {
-            color: #fff;
+            color: #000;
             text-decoration: none;
             transition: color 0.3s ease;
         }
         a:hover {
-            color: #00ddeb; /* Palantir-like cyan accent */
+            color: #0053ff; /* Palantir’s blue accent */
         }
 
         /* Navbar */
@@ -47,9 +47,13 @@
             top: 0;
             width: 100%;
             padding: 20px 0;
-            background: rgba(0, 0, 0, 0.95);
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
             z-index: 1000;
-            transition: background 0.3s ease;
+            transition: box-shadow 0.3s ease;
+        }
+        .navbar.scrolled {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         .navbar .container {
             display: flex;
@@ -59,7 +63,7 @@
         .logo {
             font-size: 1.8em;
             font-weight: 900;
-            letter-spacing: 1px;
+            letter-spacing: -1px;
         }
         .nav-links {
             display: flex;
@@ -68,11 +72,14 @@
         }
         .nav-links a {
             font-size: 1em;
-            font-weight: 400;
-            text-transform: uppercase;
+            font-weight: 500;
             padding: 10px 0;
             position: relative;
             cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #0053ff;
         }
         .nav-links a::after {
             content: '';
@@ -81,7 +88,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: #00ddeb;
+            background: #0053ff;
             transition: width 0.3s ease;
         }
         .nav-links a:hover::after {
@@ -91,10 +98,9 @@
         /* Section Styles */
         .section {
             display: none;
-            padding: 100px 0;
+            padding: 120px 0;
             min-height: 100vh;
-            position: relative;
-            background: linear-gradient(180deg, #000, #111);
+            background: #fff;
         }
         .section.active {
             display: block;
@@ -104,18 +110,19 @@
             margin-bottom: 80px;
         }
         .section-header h1 {
-            font-size: 4em;
+            font-size: 3.5em;
             font-weight: 900;
-            text-transform: uppercase;
             margin-bottom: 20px;
-            animation: fadeIn 1s ease-out;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 2s steps(40, end) forwards;
         }
         .section-header p {
             font-size: 1.5em;
             max-width: 800px;
             margin: 0 auto;
-            font-weight: 300;
-            animation: fadeIn 1s ease-out 0.3s backwards;
+            font-weight: 400;
+            animation: fadeInUp 1s ease-out 0.5s backwards;
         }
 
         /* Home Section */
@@ -125,55 +132,43 @@
             justify-content: center;
             text-align: center;
             position: relative;
-            overflow: hidden;
         }
         .hero-content {
             position: relative;
             z-index: 1;
         }
         .hero-title {
-            font-size: 5em;
+            font-size: 4.5em;
             font-weight: 900;
             line-height: 1.1;
-            text-transform: uppercase;
             margin-bottom: 30px;
-            animation: slideInUp 1s ease-out;
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 2.5s steps(40, end) forwards;
         }
         .hero-subtitle {
             font-size: 1.8em;
-            font-weight: 300;
+            font-weight: 400;
             max-width: 700px;
             margin: 0 auto 50px;
-            animation: fadeIn 1s ease-out 0.5s backwards;
+            color: #6b7280;
+            animation: fadeInUp 1s ease-out 0.5s backwards;
         }
         .hero-cta {
             display: inline-block;
             padding: 15px 40px;
             font-size: 1.2em;
-            font-weight: 600;
-            background: #fff;
-            color: #000;
-            text-transform: uppercase;
+            font-weight: 700;
+            background: #000;
+            color: #fff;
             border-radius: 5px;
-            transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
-            animation: fadeIn 1s ease-out 0.7s backwards;
+            transition: background 0.3s ease, transform 0.3s ease;
+            animation: fadeInUp 1s ease-out 0.7s backwards;
             cursor: pointer;
         }
         .hero-cta:hover {
-            background: #00ddeb;
-            color: #fff; /* Text turns white on hover */
+            background: #0053ff;
             transform: translateY(-3px);
-        }
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://i.imgur.com/8z1tx9V.png') repeat;
-            opacity: 0.05;
-            z-index: 0;
-            animation: subtleMove 20s infinite linear;
         }
 
         /* Trade Hub Section */
@@ -183,17 +178,19 @@
             gap: 60px;
         }
         .talent-form, .talent-directory {
-            background: rgba(255, 255, 255, 0.05);
+            background: #f9fafb;
             padding: 50px;
             border-radius: 10px;
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .talent-form:hover, .talent-directory:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         }
         .talent-form h2, .talent-directory h2 {
             font-size: 2.5em;
-            font-weight: 700;
+            font-weight: 900;
             margin-bottom: 30px;
         }
         .form-field {
@@ -201,23 +198,22 @@
         }
         .form-field label {
             font-size: 1.2em;
-            font-weight: 600;
-            color: #fff;
+            font-weight: 500;
             display: block;
             margin-bottom: 10px;
         }
         .form-field input, .form-field textarea {
             width: 100%;
             padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid #d1d5db;
             border-radius: 5px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
+            background: #fff;
             font-size: 1.1em;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .form-field input:focus, .form-field textarea:focus {
-            border-color: #00ddeb;
+            border-color: #0053ff;
+            box-shadow: 0 0 5px rgba(0, 83, 255, 0.3);
             outline: none;
         }
         .form-field textarea {
@@ -225,20 +221,18 @@
             resize: vertical;
         }
         .action-btn {
-            background: #fff;
-            color: #000;
+            background: #000;
+            color: #fff;
             padding: 15px 40px;
             border: none;
             border-radius: 5px;
             font-size: 1.2em;
-            font-weight: 600;
-            text-transform: uppercase;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
         .action-btn:hover {
-            background: #00ddeb;
-            color: #fff; /* Text turns white on hover */
+            background: #0053ff;
             transform: translateY(-3px);
         }
         .filter-bar {
@@ -248,16 +242,15 @@
         }
         .filter-bar input, .filter-bar select {
             padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid #d1d5db;
             border-radius: 5px;
-            background: rgba(255, 255, 255, 0.05);
-            color: #fff;
+            background: #fff;
             font-size: 1.1em;
             flex: 1;
             transition: border-color 0.3s ease;
         }
         .filter-bar input:focus, .filter-bar select:focus {
-            border-color: #00ddeb;
+            border-color: #0053ff;
             outline: none;
         }
         .talent-list {
@@ -265,14 +258,16 @@
             overflow-y: auto;
         }
         .talent-entry {
-            background: rgba(255, 255, 255, 0.03);
+            background: #fff;
             padding: 25px;
             border-radius: 5px;
             margin-bottom: 20px;
-            transition: background 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .talent-entry:hover {
-            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
         .talent-entry strong {
             font-size: 1.4em;
@@ -281,7 +276,7 @@
             margin-bottom: 10px;
         }
         .talent-entry .match {
-            color: #00ddeb;
+            color: #0053ff;
             font-weight: 600;
             margin-top: 15px;
             display: block;
@@ -294,33 +289,35 @@
             gap: 40px;
         }
         .resource-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: #fff;
             padding: 40px;
             border-radius: 10px;
             text-align: center;
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .resource-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         }
         .resource-card h3 {
             font-size: 2em;
-            font-weight: 700;
+            font-weight: 900;
             margin-bottom: 20px;
         }
         .resource-card p {
             margin-bottom: 25px;
         }
         .resource-card a {
-            font-weight: 600;
+            font-weight: 700;
             padding: 10px 20px;
-            border: 1px solid #fff;
+            border: 1px solid #000;
             border-radius: 5px;
             transition: background 0.3s ease, color 0.3s ease;
         }
         .resource-card a:hover {
-            background: #fff;
-            color: #000;
+            background: #000;
+            color: #fff;
         }
 
         /* Stories Section */
@@ -332,35 +329,39 @@
             gap: 60px;
         }
         .story-form, .story-feed {
-            background: rgba(255, 255, 255, 0.05);
+            background: #f9fafb;
             padding: 50px;
             border-radius: 10px;
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .story-form:hover, .story-feed:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         }
         .story-form h2, .story-feed h2 {
             font-size: 2.5em;
-            font-weight: 700;
+            font-weight: 900;
             margin-bottom: 30px;
         }
         .story-entry {
-            background: rgba(255, 255, 255, 0.03);
+            background: #fff;
             padding: 30px;
             border-radius: 5px;
             margin-bottom: 20px;
-            transition: background 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .story-entry:hover {
-            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         }
         .story-entry p {
             font-size: 1.3em;
             font-style: italic;
         }
         .story-entry span {
-            font-weight: 600;
+            font-weight: 500;
             display: block;
             margin-top: 15px;
         }
@@ -369,33 +370,34 @@
         #contact .contact-wrapper {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.05);
+            background: #f9fafb;
             padding: 60px;
             border-radius: 10px;
-            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .contact-wrapper:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         }
         .contact-wrapper h2 {
             font-size: 2.5em;
-            font-weight: 700;
+            font-weight: 900;
             margin-bottom: 30px;
         }
 
         /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
         }
-        @keyframes slideInUp {
-            from { transform: translateY(50px); opacity: 0; }
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        @keyframes subtleMove {
-            0% { background-position: 0 0; }
-            50% { background-position: 100px 100px; }
-            100% { background-position: 0 0; }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         /* Responsive Design */
@@ -446,11 +448,10 @@
 
     <!-- Home Section -->
     <section id="home" class="section active">
-        <div class="hero-bg"></div>
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Talent Trade Network</h1>
-                <p class="hero-subtitle">Empower your future. Trade skills with a global network of innovators.</p>
+                <p class="hero-subtitle">Unlock your potential by trading skills with innovators worldwide.</p>
                 <a class="hero-cta" onclick="showSection('hub')">Get Started</a>
             </div>
         </div>
@@ -461,7 +462,7 @@
         <div class="container">
             <div class="section-header">
                 <h1>Trade Hub</h1>
-                <p>Connect, trade, and grow with a community of talent.</p>
+                <p>Connect and exchange skills with a global community.</p>
             </div>
             <div class="hub-container">
                 <div class="talent-form">
@@ -506,7 +507,7 @@
         <div class="container">
             <div class="section-header">
                 <h1>Resources</h1>
-                <p>Tools and platforms to enhance your trading experience.</p>
+                <p>Tools to enhance your skill-trading experience.</p>
             </div>
             <div class="resources-grid">
                 <div class="resource-card">
@@ -565,7 +566,7 @@
         <div class="container">
             <div class="section-header">
                 <h1>Contact Us</h1>
-                <p>Reach out with questions or feedback.</p>
+                <p>Get in touch with questions or feedback.</p>
             </div>
             <div class="contact-wrapper">
                 <h2>Send a Message</h2>
@@ -587,6 +588,16 @@
     </section>
 
     <script>
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
         // Page Navigation
         function showSection(sectionId) {
             document.querySelectorAll('.section').forEach(section => {
@@ -596,7 +607,7 @@
             targetSection.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Re-render dynamic content when switching sections
+            // Re-render dynamic content
             if (sectionId === 'hub') renderDirectory();
             if (sectionId === 'stories') renderStories();
         }
@@ -641,7 +652,7 @@
 
         function renderDirectory(filter = '', sort = 'name') {
             const directory = document.getElementById('directory-list');
-            if (!directory) return; // Prevent errors if not on hub page yet
+            if (!directory) return;
             directory.innerHTML = '';
             let filteredTalents = talents.filter(entry => 
                 entry.offer.toLowerCase().includes(filter.toLowerCase()) || 
@@ -721,7 +732,7 @@
 
         function renderStories() {
             const storyList = document.getElementById('story-list');
-            if (!storyList) return; // Prevent errors if not on stories page yet
+            if (!storyList) return;
             storyList.innerHTML = '';
             stories.sort((a, b) => b.timestamp - a.timestamp);
 
@@ -758,16 +769,16 @@
             }
 
             const contactData = { name, email, message, timestamp: Date.now() };
-            console.log('Contact Submission:', contactData); // Simulated backend logging
+            console.log('Contact Submission:', contactData);
             clearForm('contact');
             alert('Message sent successfully! (Note: This is a simulation—no real backend.)');
         }
 
         // Initial Setup
         document.addEventListener('DOMContentLoaded', () => {
-            showSection('home'); // Start on Home
-            renderDirectory();   // Preload directory if on hub
-            renderStories();     // Preload stories if on stories
+            showSection('home');
+            renderDirectory();
+            renderStories();
         });
     </script>
 </body>
