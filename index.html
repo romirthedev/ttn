@@ -4,37 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talent Trade Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Global Reset and Base */
+        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #0a0a0a; /* Deep black base */
+            font-family: 'Inter', sans-serif;
+            background: #000;
             color: #fff;
-            overflow-x: hidden;
             line-height: 1.6;
+            overflow-x: hidden;
         }
         .container {
-            max-width: 1400px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 0 40px;
         }
         h1, h2, h3 {
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
         p {
-            font-size: 1.2em;
-            color: #d0d0d0;
+            font-size: 1.1em;
+            color: #ccc;
         }
         a {
+            color: #fff;
             text-decoration: none;
-            transition: transform 0.3s, color 0.3s;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #00ddeb; /* Palantir-like cyan accent */
         }
 
         /* Navbar */
@@ -43,10 +47,9 @@
             top: 0;
             width: 100%;
             padding: 20px 0;
-            background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.7));
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000;
-            animation: slideInTop 0.8s ease-out;
+            transition: background 0.3s ease;
         }
         .navbar .container {
             display: flex;
@@ -54,11 +57,9 @@
             align-items: center;
         }
         .logo {
-            font-size: 2em;
-            background: linear-gradient(45deg, #6b48ff, #00ddeb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.8em;
             font-weight: 900;
+            letter-spacing: 1px;
         }
         .nav-links {
             display: flex;
@@ -66,17 +67,24 @@
             list-style: none;
         }
         .nav-links a {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 30px;
-            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+            font-size: 1em;
+            font-weight: 400;
+            text-transform: uppercase;
+            padding: 10px 0;
+            position: relative;
         }
-        .nav-links a:hover {
-            background: linear-gradient(45deg, #ff007a, #ff6200);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(255, 0, 122, 0.5);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #00ddeb;
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         /* Section Styles */
@@ -85,7 +93,7 @@
             padding: 100px 0;
             min-height: 100vh;
             position: relative;
-            overflow: hidden;
+            background: linear-gradient(180deg, #000, #111);
         }
         .section.active {
             display: block;
@@ -93,223 +101,186 @@
         .section-header {
             text-align: center;
             margin-bottom: 80px;
-            position: relative;
         }
         .section-header h1 {
             font-size: 4em;
-            background: linear-gradient(90deg, #6b48ff, #00ddeb, #ff007a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textGlow 3s infinite alternate;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-out;
         }
         .section-header p {
+            font-size: 1.5em;
             max-width: 800px;
-            margin: 20px auto;
-            font-size: 1.4em;
+            margin: 0 auto;
+            font-weight: 300;
+            animation: fadeIn 1s ease-out 0.3s backwards;
         }
 
-        /* Home Section - Unique Landing Page */
+        /* Home Section */
         #home {
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: radial-gradient(circle at center, rgba(107, 72, 255, 0.2), rgba(0, 10, 10, 1));
             position: relative;
+            overflow: hidden;
         }
-        #home::before {
-            content: '';
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-title {
+            font-size: 5em;
+            font-weight: 900;
+            line-height: 1.1;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            animation: slideInUp 1s ease-out;
+        }
+        .hero-subtitle {
+            font-size: 1.8em;
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            animation: fadeIn 1s ease-out 0.5s backwards;
+        }
+        .hero-cta {
+            display: inline-block;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: 600;
+            background: #fff;
+            color: #000;
+            text-transform: uppercase;
+            border-radius: 5px;
+            transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+            animation: fadeIn 1s ease-out 0.7s backwards;
+        }
+        .hero-cta:hover {
+            background: #00ddeb;
+            color: #fff; /* Text turns white on hover for contrast */
+            transform: translateY(-3px);
+        }
+        .hero-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: url('https://i.imgur.com/8z1tx9V.png') repeat;
-            opacity: 0.1;
+            opacity: 0.05;
             z-index: 0;
-        }
-        .hero-wrapper {
-            position: relative;
-            z-index: 1;
-        }
-        .hero-title {
-            font-size: 6em;
-            line-height: 1.1;
-            background: linear-gradient(45deg, #6b48ff, #00ddeb, #ff007a, #ff6200);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: slideInLeft 1s ease-out, textPulse 2s infinite;
-        }
-        .hero-subtitle {
-            font-size: 1.8em;
-            max-width: 700px;
-            margin: 30px auto;
-            animation: fadeInUp 1.2s ease-out 0.3s backwards;
-        }
-        .hero-cta {
-            display: inline-block;
-            padding: 20px 60px;
-            font-size: 1.5em;
-            font-weight: 700;
-            background: linear-gradient(45deg, #ff007a, #ff6200);
-            color: #fff;
-            border-radius: 50px;
-            margin-top: 40px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: bounceGlow 2s infinite;
-        }
-        .hero-cta:hover {
-            transform: scale(1.15);
-            box-shadow: 0 0 30px rgba(255, 0, 122, 0.8);
-        }
-        .hero-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: radial-gradient(circle, rgba(255, 0, 122, 0.8), transparent);
-            border-radius: 50%;
-            animation: float 5s infinite ease-in-out;
-        }
-        .particle:nth-child(odd) {
-            background: radial-gradient(circle, rgba(0, 221, 235, 0.8), transparent);
-        }
-        .particle:nth-child(3n) {
-            background: radial-gradient(circle, rgba(107, 72, 255, 0.8), transparent);
+            animation: subtleMove 20s infinite linear;
         }
 
         /* Trade Hub Section */
         #hub .hub-container {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 60px;
-            flex-wrap: wrap;
-            justify-content: center;
-            position: relative;
         }
         .talent-form, .talent-directory {
-            flex: 1;
-            min-width: 500px;
             background: rgba(255, 255, 255, 0.05);
             padding: 50px;
-            border-radius: 25px;
-            box-shadow: 0 10px 40px rgba(107, 72, 255, 0.2);
-            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
         }
-        .talent-form {
-            animation: slideInLeft 0.8s ease-out, glowBorder 4s infinite;
-        }
-        .talent-directory {
-            animation: slideInRight 0.8s ease-out, glowBorder 4s infinite 1s;
+        .talent-form:hover, .talent-directory:hover {
+            transform: translateY(-5px);
         }
         .talent-form h2, .talent-directory h2 {
             font-size: 2.5em;
+            font-weight: 700;
             margin-bottom: 30px;
-            background: linear-gradient(45deg, #00ddeb, #ff007a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         .form-field {
             margin-bottom: 30px;
-            position: relative;
         }
         .form-field label {
             font-size: 1.2em;
-            color: #00ddeb;
             font-weight: 600;
-            margin-bottom: 10px;
+            color: #fff;
             display: block;
+            margin-bottom: 10px;
         }
         .form-field input, .form-field textarea {
             width: 100%;
             padding: 15px;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
             font-size: 1.1em;
-            transition: box-shadow 0.3s, transform 0.3s;
+            transition: border-color 0.3s ease;
         }
         .form-field input:focus, .form-field textarea:focus {
-            box-shadow: 0 0 20px rgba(255, 0, 122, 0.5);
-            transform: scale(1.02);
+            border-color: #00ddeb;
             outline: none;
         }
         .form-field textarea {
-            min-height: 150px;
+            min-height: 120px;
             resize: vertical;
         }
         .action-btn {
-            background: linear-gradient(45deg, #6b48ff, #ff007a);
-            color: #fff;
+            background: #fff;
+            color: #000;
             padding: 15px 40px;
             border: none;
-            border-radius: 15px;
+            border-radius: 5px;
             font-size: 1.2em;
             font-weight: 600;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: buttonPulse 2s infinite;
+            transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
         }
         .action-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(107, 72, 255, 0.7);
+            background: #00ddeb;
+            color: #fff; /* Text turns white on hover */
+            transform: translateY(-3px);
         }
         .filter-bar {
             display: flex;
             gap: 20px;
             margin-bottom: 30px;
-            flex-wrap: wrap;
         }
         .filter-bar input, .filter-bar select {
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
-            font-size: 1em;
+            font-size: 1.1em;
             flex: 1;
-            min-width: 200px;
-            transition: box-shadow 0.3s;
+            transition: border-color 0.3s ease;
         }
         .filter-bar input:focus, .filter-bar select:focus {
-            box-shadow: 0 0 15px rgba(0, 221, 235, 0.5);
+            border-color: #00ddeb;
             outline: none;
         }
         .talent-list {
             max-height: 600px;
             overflow-y: auto;
-            padding-right: 10px;
         }
         .talent-entry {
-            background: linear-gradient(135deg, rgba(107, 72, 255, 0.1), rgba(255, 0, 122, 0.1));
+            background: rgba(255, 255, 255, 0.03);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 5px;
             margin-bottom: 20px;
-            animation: fadeInUp 0.6s ease-out;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: background 0.3s ease;
         }
         .talent-entry:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(255, 0, 122, 0.3);
+            background: rgba(255, 255, 255, 0.08);
         }
         .talent-entry strong {
             font-size: 1.4em;
-            background: linear-gradient(45deg, #ff6200, #ff007a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
         }
         .talent-entry .match {
             color: #00ddeb;
             font-weight: 600;
-            animation: glow 2s infinite;
             margin-top: 15px;
             display: block;
         }
@@ -319,42 +290,35 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
-            position: relative;
         }
         .resource-card {
             background: rgba(255, 255, 255, 0.05);
             padding: 40px;
-            border-radius: 20px;
+            border-radius: 10px;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: slideInUp 0.8s ease-out;
-            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
         }
         .resource-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(0, 221, 235, 0.4);
+            transform: translateY(-5px);
         }
         .resource-card h3 {
             font-size: 2em;
+            font-weight: 700;
             margin-bottom: 20px;
-            background: linear-gradient(45deg, #6b48ff, #00ddeb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         .resource-card p {
             margin-bottom: 25px;
         }
         .resource-card a {
-            color: #ff007a;
             font-weight: 600;
             padding: 10px 20px;
-            border: 2px solid #ff007a;
-            border-radius: 10px;
-            transition: background 0.3s, color 0.3s;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            transition: background 0.3s ease, color 0.3s ease;
         }
         .resource-card a:hover {
-            background: #ff007a;
-            color: #fff;
+            background: #fff;
+            color: #000;
         }
 
         /* Stories Section */
@@ -368,41 +332,32 @@
         .story-form, .story-feed {
             background: rgba(255, 255, 255, 0.05);
             padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(255, 0, 122, 0.2);
-            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
         }
-        .story-form {
-            animation: slideInLeft 0.8s ease-out, glowBorder 4s infinite;
-        }
-        .story-feed {
-            animation: slideInRight 0.8s ease-out, glowBorder 4s infinite 1s;
+        .story-form:hover, .story-feed:hover {
+            transform: translateY(-5px);
         }
         .story-form h2, .story-feed h2 {
             font-size: 2.5em;
+            font-weight: 700;
             margin-bottom: 30px;
-            background: linear-gradient(45deg, #ff6200, #6b48ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         .story-entry {
-            background: linear-gradient(135deg, rgba(0, 221, 235, 0.1), rgba(107, 72, 255, 0.1));
+            background: rgba(255, 255, 255, 0.03);
             padding: 30px;
-            border-radius: 15px;
+            border-radius: 5px;
             margin-bottom: 20px;
-            animation: fadeInUp 0.6s ease-out;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: background 0.3s ease;
         }
         .story-entry:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0, 221, 235, 0.3);
+            background: rgba(255, 255, 255, 0.08);
         }
         .story-entry p {
-            font-style: italic;
             font-size: 1.3em;
+            font-style: italic;
         }
         .story-entry span {
-            color: #ff6200;
             font-weight: 600;
             display: block;
             margin-top: 15px;
@@ -414,71 +369,31 @@
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.05);
             padding: 60px;
-            border-radius: 25px;
-            box-shadow: 0 10px 40px rgba(107, 72, 255, 0.2);
-            backdrop-filter: blur(5px);
-            animation: fadeInUp 0.8s ease-out, glowBorder 4s infinite;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        .contact-wrapper:hover {
+            transform: translateY(-5px);
         }
         .contact-wrapper h2 {
             font-size: 2.5em;
+            font-weight: 700;
             margin-bottom: 30px;
-            background: linear-gradient(45deg, #00ddeb, #ff007a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        /* Advanced Animations */
-        @keyframes slideInTop {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        @keyframes slideInLeft {
-            from { transform: translateX(-100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes fadeInUp {
+        @keyframes slideInUp {
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        @keyframes textGlow {
-            0% { text-shadow: 0 0 10px #6b48ff; }
-            50% { text-shadow: 0 0 20px #00ddeb, 0 0 30px #ff007a; }
-            100% { text-shadow: 0 0 10px #ff6200; }
-        }
-        @keyframes textPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        @keyframes bounceGlow {
-            0%, 100% { transform: translateY(0); box-shadow: 0 0 15px rgba(255, 0, 122, 0.5); }
-            50% { transform: translateY(-15px); box-shadow: 0 0 30px rgba(255, 0, 122, 0.8); }
-        }
-        @keyframes buttonPulse {
-            0% { transform: scale(1); box-shadow: 0 0 10px rgba(107, 72, 255, 0.5); }
-            50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(107, 72, 255, 0.8); }
-            100% { transform: scale(1); box-shadow: 0 0 10px rgba(107, 72, 255, 0.5); }
-        }
-        @keyframes glow {
-            0% { text-shadow: 0 0 5px #00ddeb; }
-            50% { text-shadow: 0 0 20px #00ddeb, 0 0 40px #ff007a; }
-            100% { text-shadow: 0 0 5px #00ddeb; }
-        }
-        @keyframes glowBorder {
-            0% { border: 2px solid rgba(107, 72, 255, 0.5); }
-            25% { border: 2px solid rgba(0, 221, 235, 0.5); }
-            50% { border: 2px solid rgba(255, 0, 122, 0.5); }
-            75% { border: 2px solid rgba(255, 98, 0, 0.5); }
-            100% { border: 2px solid rgba(107, 72, 255, 0.5); }
-        }
-        @keyframes float {
-            0% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-20px) translateX(10px); }
-            100% { transform: translateY(0) translateX(0); }
+        @keyframes subtleMove {
+            0% { background-position: 0 0; }
+            50% { background-position: 100px 100px; }
+            100% { background-position: 0 0; }
         }
 
         /* Responsive Design */
@@ -493,17 +408,14 @@
                 text-align: center;
             }
             .hero-title {
-                font-size: 3.5em;
+                font-size: 3em;
             }
             .hero-subtitle {
                 font-size: 1.4em;
             }
             #hub .hub-container {
-                flex-direction: column;
+                grid-template-columns: 1fr;
                 gap: 40px;
-            }
-            .talent-form, .talent-directory {
-                min-width: 100%;
             }
             .filter-bar {
                 flex-direction: column;
@@ -530,19 +442,15 @@
         </div>
     </nav>
 
-    <!-- Home Section - Unique Landing Page -->
+    <!-- Home Section -->
     <section id="home" class="section active">
-        <div class="hero-wrapper">
-            <h1 class="hero-title">Talent Trade Network</h1>
-            <p class="hero-subtitle">Revolutionize your skills. Trade expertise with a global crew—no cash, just pure innovation.</p>
-            <a href="#" class="hero-cta" onclick="showSection('hub')">Launch Your Trade</a>
-        </div>
-        <div class="hero-particles">
-            <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
-            <div class="particle" style="top: 30%; left: 80%; animation-delay: 1s;"></div>
-            <div class="particle" style="top: 60%; left: 30%; animation-delay: 2s;"></div>
-            <div class="particle" style="top: 80%; left: 60%; animation-delay: 3s;"></div>
-            <div class="particle" style="top: 40%; left: 50%; animation-delay: 4s;"></div>
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Talent Trade Network</h1>
+                <p class="hero-subtitle">Empower your future. Trade skills with a global network of innovators.</p>
+                <a href="#" class="hero-cta" onclick="showSection('hub')">Get Started</a>
+            </div>
         </div>
     </section>
 
@@ -551,7 +459,7 @@
         <div class="container">
             <div class="section-header">
                 <h1>Trade Hub</h1>
-                <p>Connect with talent, swap skills, and level up.</p>
+                <p>Connect, trade, and grow with a community of talent.</p>
             </div>
             <div class="hub-container">
                 <div class="talent-form">
@@ -562,7 +470,7 @@
                     </div>
                     <div class="form-field">
                         <label for="offer">Skills I Can Teach</label>
-                        <textarea id="offer" placeholder="e.g., Coding, Dance"></textarea>
+                        <textarea id="offer" placeholder="e.g., Coding, Photography"></textarea>
                     </div>
                     <div class="form-field">
                         <label for="request">Skills I Want to Learn</label>
@@ -572,7 +480,7 @@
                         <label for="contact">Contact Info</label>
                         <input type="text" id="contact" placeholder="e.g., email, Discord">
                     </div>
-                    <button class="action-btn" onclick="addTalent()">Submit Talent</button>
+                    <button class="action-btn" onclick="addTalent()">Submit</button>
                 </div>
                 <div class="talent-directory">
                     <h2>Talent Directory</h2>
@@ -596,27 +504,27 @@
         <div class="container">
             <div class="section-header">
                 <h1>Resources</h1>
-                <p>Tools to turbocharge your talent trades.</p>
+                <p>Tools and platforms to enhance your trading experience.</p>
             </div>
             <div class="resources-grid">
                 <div class="resource-card">
                     <h3>Zoom</h3>
-                    <p>Free video calls to connect with your trade partners.</p>
+                    <p>High-quality video calls for skill exchanges.</p>
                     <a href="https://zoom.us" target="_blank">Visit Zoom</a>
                 </div>
                 <div class="resource-card">
                     <h3>Google Meet</h3>
-                    <p>Smooth video conferencing for skill swaps.</p>
+                    <p>Reliable video conferencing for your trades.</p>
                     <a href="https://meet.google.com" target="_blank">Visit Google Meet</a>
                 </div>
                 <div class="resource-card">
                     <h3>Discord</h3>
-                    <p>Chat and organize your trades with ease.</p>
+                    <p>Chat and coordinate with your trade partners.</p>
                     <a href="https://discord.com" target="_blank">Visit Discord</a>
                 </div>
                 <div class="resource-card">
                     <h3>Trade Tips</h3>
-                    <p>Plan a 1-hour session with clear goals for max impact.</p>
+                    <p>Set clear goals for a 1-hour session to maximize value.</p>
                 </div>
             </div>
         </div>
@@ -627,7 +535,7 @@
         <div class="container">
             <div class="section-header">
                 <h1>Success Stories</h1>
-                <p>Real wins from our trading community.</p>
+                <p>Hear from our community of skill traders.</p>
             </div>
             <div class="stories-container">
                 <div class="story-form">
@@ -640,7 +548,7 @@
                         <label for="story-text">Your Story</label>
                         <textarea id="story-text" placeholder="Tell us about your trade..."></textarea>
                     </div>
-                    <button class="action-btn" onclick="addStory()">Submit Story</button>
+                    <button class="action-btn" onclick="addStory()">Submit</button>
                 </div>
                 <div class="story-feed">
                     <h2>Community Stories</h2>
@@ -655,7 +563,7 @@
         <div class="container">
             <div class="section-header">
                 <h1>Contact Us</h1>
-                <p>Got ideas or questions? Let’s connect.</p>
+                <p>Reach out with questions or feedback.</p>
             </div>
             <div class="contact-wrapper">
                 <h2>Send a Message</h2>
@@ -671,7 +579,7 @@
                     <label for="contact-message">Message</label>
                     <textarea id="contact-message" placeholder="Your message"></textarea>
                 </div>
-                <button class="action-btn" onclick="submitContact()">Send Message</button>
+                <button class="action-btn" onclick="submitContact()">Send</button>
             </div>
         </div>
     </section>
@@ -695,15 +603,17 @@
             const request = document.getElementById('request').value.trim();
             const contact = document.getElementById('contact').value.trim();
 
-            if (name && offer && request && contact) {
-                const entry = { name, offer, request, contact, timestamp: Date.now() };
-                talents.push(entry);
-                localStorage.setItem('talents', JSON.stringify(talents));
-                clearForm('hub');
-                renderDirectory();
-            } else {
+            if (!name || !offer || !request || !contact) {
                 alert('Please fill out all fields to add your talent.');
+                return;
             }
+
+            const entry = { name, offer, request, contact, timestamp: Date.now() };
+            talents.push(entry);
+            localStorage.setItem('talents', JSON.stringify(talents));
+            clearForm('hub');
+            renderDirectory();
+            alert('Talent added successfully!');
         }
 
         function clearForm(section) {
@@ -740,6 +650,11 @@
                 return 0;
             });
 
+            if (filteredTalents.length === 0) {
+                directory.innerHTML = '<p>No talents match your search.</p>';
+                return;
+            }
+
             filteredTalents.forEach(entry => {
                 const div = document.createElement('div');
                 div.className = 'talent-entry';
@@ -775,51 +690,69 @@
 
         // Stories Logic
         let stories = JSON.parse(localStorage.getItem('stories')) || [
-            { name: '@NeonCoder', text: 'Traded my app dev skills for graphic design—now my projects pop!' },
-            { name: '@VibeMaster', text: 'Taught DJing, learned French. This platform’s electric!' }
+            { name: '@TechTrader', text: 'Traded my coding skills for graphic design—my projects are next-level now.', timestamp: Date.now() - 100000 },
+            { name: '@SkillSeeker', text: 'Taught guitar, learned Spanish. This network is unreal.', timestamp: Date.now() - 50000 }
         ];
 
         function addStory() {
             const name = document.getElementById('story-name').value.trim();
             const text = document.getElementById('story-text').value.trim();
 
-            if (name && text) {
-                stories.push({ name, text, timestamp: Date.now() });
-                localStorage.setItem('stories', JSON.stringify(stories));
-                clearForm('stories');
-                renderStories();
-            } else {
+            if (!name || !text) {
                 alert('Please fill out both fields to share your story.');
+                return;
             }
+
+            const story = { name, text, timestamp: Date.now() };
+            stories.push(story);
+            localStorage.setItem('stories', JSON.stringify(stories));
+            clearForm('stories');
+            renderStories();
+            alert('Story shared successfully!');
         }
 
         function renderStories() {
             const storyList = document.getElementById('story-list');
             storyList.innerHTML = '';
-            stories.sort((a, b) => b.timestamp - a.timestamp); // Newest first
+            stories.sort((a, b) => b.timestamp - a.timestamp);
+
+            if (stories.length === 0) {
+                storyList.innerHTML = '<p>No stories yet. Be the first to share!</p>';
+                return;
+            }
+
             stories.forEach(story => {
                 const div = document.createElement('div');
                 div.className = 'story-entry';
                 div.innerHTML = `
                     <p>“${story.text}”</p>
-                    <span>— ${story.name}</span>
+                    <span>— ${story.name} (${new Date(story.timestamp).toLocaleDateString()})</span>
                 `;
                 storyList.appendChild(div);
             });
         }
 
-        // Contact Logic (Simulated)
+        // Contact Logic
         function submitContact() {
             const name = document.getElementById('contact-name').value.trim();
             const email = document.getElementById('contact-email').value.trim();
             const message = document.getElementById('contact-message').value.trim();
 
-            if (name && email && message) {
-                alert('Message sent! (Simulated—no real backend.)');
-                clearForm('contact');
-            } else {
+            if (!name || !email || !message) {
                 alert('Please complete all fields to send your message.');
+                return;
             }
+
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Simulate sending (no real backend)
+            const contactData = { name, email, message, timestamp: Date.now() };
+            console.log('Contact Submission:', contactData); // For debugging
+            clearForm('contact');
+            alert('Message sent successfully! (Note: This is a simulation—no real backend.)');
         }
 
         // Initial Renders
